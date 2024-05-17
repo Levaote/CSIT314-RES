@@ -53,7 +53,6 @@ $conn->close();
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required><br><br>
 
-            // Add a option to select the seller, retrieve seller name and id from database
             <label for="seller_id">Seller:</label>
             <select id="seller_id" name="seller_id" required>
                 <option value="">Select Seller</option>

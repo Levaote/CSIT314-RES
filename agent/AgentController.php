@@ -41,7 +41,7 @@ class AgentController {
         $sellers = [];
         $query = "SELECT u.user_id, up.first_name, up.last_name 
           FROM Users u 
-          LEFT JOIN UserProfiles up ON u.user_id = up.user_id 
+          JOIN UserProfiles up ON u.user_id = up.user_id 
           WHERE u.role = 'Seller'";
         $result = $this->conn->query($query);
         if ($result->num_rows > 0) {
