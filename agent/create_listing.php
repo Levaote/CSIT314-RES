@@ -63,7 +63,7 @@ $conn->close();
                     echo "<option value='{$seller['user_id']}'>{$seller['first_name']} {$seller['last_name']}</option>";
                 }
                 ?>
-
+                
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="4" required></textarea><br><br>
 

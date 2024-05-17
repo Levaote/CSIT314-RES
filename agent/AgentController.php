@@ -39,7 +39,7 @@ class AgentController {
 
     public function getSellers() {
         $sellers = [];
-        $query = "SELECT user_id, first_name, last_name FROM Users WHERE role = 'Seller'";
+        $query = "SELECT user_id, first_name, last_name FROM Users LEFT JOIN UserProfiles WHERE role = 'Seller'";
         $result = $this->conn->query($query);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
