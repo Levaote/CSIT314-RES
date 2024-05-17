@@ -28,8 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: Unable to add new listing.";
     }
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
