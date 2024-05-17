@@ -39,7 +39,10 @@ class AgentController {
 
     public function getSellers() {
         $sellers = [];
-        $query = "SELECT user_id, first_name, last_name FROM Users LEFT JOIN UserProfiles WHERE role = 'Seller'";
+        $query = "SELECT u.user_id, up.first_name, up.last_name 
+          FROM Users u 
+          LEFT JOIN UserProfiles up ON u.user_id = up.user_id 
+          WHERE u.role = 'Seller'";
         $result = $this->conn->query($query);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -48,6 +51,7 @@ class AgentController {
         }
         return $sellers;
     }
+
     public function addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status) {
         $sql = "INSERT INTO PropertyListings (agent_id, seller_id, title, description, property_type, price, location, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
