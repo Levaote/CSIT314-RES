@@ -37,15 +37,26 @@ class AgentController {
         return $reviews;
     }
 
-    public function addPropertyListing($agentId, $title, $description, $propertyType, $price, $location, $status) {
-        $sql = "INSERT INTO PropertyListings (agent_id, title, description, property_type, price, location, status)
+    public function getSellers() {
+        $sellers = [];
+        $query = "SELECT user_id, first_name, last_name FROM Users WHERE role = 'Seller'";
+        $result = $this->conn->query($query);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $sellers[] = $row;
+            }
+        }
+        return $sellers;
+    }
+    public function addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status) {
+        $sql = "INSERT INTO PropertyListings (agent_id, seller_id, title, description, property_type, price, location, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) {
             echo "Error preparing statement: " . $this->conn->error;
             return false;
         }
-        $stmt->bind_param("isssiss", $agentId, $title, $description, $propertyType, $price, $location, $status);
+        $stmt->bind_param("isssiss", $agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status);
         if ($stmt->execute()) {
             return true;
         } else {

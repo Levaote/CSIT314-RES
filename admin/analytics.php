@@ -1,3 +1,9 @@
+<?php
+include '../dbconnect.php';
+include 'AdminController.php';
+$adminController = new AdminController($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,37 +70,7 @@
             </thead>
             <tbody>
                 <?php
-                include '../dbconnect.php';
-
-                // Retrieve all user interactions from the database
-                $sql = "SELECT u.username, pi.interaction_type, pl.title, pi.interaction_timestamp
-                        FROM PropertyInteractions pi
-                        INNER JOIN Users u ON pi.user_id = u.user_id
-                        INNER JOIN PropertyListings pl ON pi.listing_id = pl.listing_id";
-
-                // Handle search functionality
-                if (isset($_GET['search']) && !empty($_GET['search'])) {
-                    $search = $conn->real_escape_string($_GET['search']);
-                    $sql .= " WHERE u.username LIKE '%$search%' OR pl.title LIKE '%$search%'";
-                }
-
-                $sql .= " ORDER BY pi.interaction_timestamp DESC";
-
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>{$row['username']}</td>";
-                        echo "<td>{$row['interaction_type']}</td>";
-                        echo "<td>{$row['title']}</td>";
-                        echo "<td>{$row['interaction_timestamp']}</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='4'>No interactions found</td></tr>";
-                }
-
+                $adminController->displayUserInteractions();
                 $conn->close();
                 ?>
             </tbody>

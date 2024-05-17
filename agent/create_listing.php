@@ -18,9 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = $_POST['price'];
     $location = $_POST['location'];
     $agentId = $_SESSION['user_id']; 
+    $sellerId = $_POST['seller_id']; 
     $status = 'Active'; 
 
-    if ($agentController->addPropertyListing($agentId, $title, $description, $propertyType, $price, $location, $status)) {
+    if ($agentController->addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status)) {
         header("Location: agent.php");
         exit();
     } else {
@@ -51,6 +52,17 @@ $conn->close();
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required><br><br>
+
+            // Add a option to select the seller, retrieve seller name and id from database
+            <label for="seller_id">Seller:</label>
+            <select id="seller_id" name="seller_id" required>
+                <option value="">Select Seller</option>
+                <?php
+                $sellers = $agentController->getSellers();
+                foreach ($sellers as $seller) {
+                    echo "<option value='{$seller['user_id']}'>{$seller['first_name']} {$seller['last_name']}</option>";
+                }
+                ?>
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="4" required></textarea><br><br>
