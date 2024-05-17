@@ -17,9 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $propertyType = $_POST['property_type'];
     $price = $_POST['price'];
     $location = $_POST['location'];
-    $agentId = $_SESSION['user_id']; 
-    $sellerId = $_POST['seller_id']; 
-    $status = 'Active'; 
+    $agentId = $_SESSION['user_id'];
+    $sellerId = $_POST['seller_id'];
+    $status = 'Active';
 
     if ($agentController->addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status)) {
         header("Location: agent.php");
@@ -32,12 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Listing - Real Estate System</title>
     <link rel="stylesheet" type="text/css" href="agent.css">
 </head>
+
 <body>
     <header>
         <h1>Create New Property Listing</h1>
@@ -48,9 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <main>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required><br><br>
-
             <label for="seller_id">Seller:</label>
             <select id="seller_id" name="seller_id" required>
                 <option value="">Select Seller</option>
@@ -60,7 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<option value='{$seller['user_id']}'>{$seller['first_name']} {$seller['last_name']}</option>";
                 }
                 ?>
-                
+            </select><br><br>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required><br><br>
+
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="4" required></textarea><br><br>
 
@@ -81,4 +84,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         &copy; <?php echo date("Y"); ?> Real Estate System
     </footer>
 </body>
+
 </html>
