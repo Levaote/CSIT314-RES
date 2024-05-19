@@ -20,6 +20,7 @@ Database: MySQL<br>
 admin/: Contains files related to admin functionalities. <br>
 agent/: Contains files related to real estate agent functionalities. <br>
 buyer/: Contains files related to buyer functionalities. <br>
+review/: Contains files related to review functionalities. <br>
 seller/: Contains files related to seller functionalities. <br>
 class_property.php: Defines the property class. <br>
 class_user.php: Defines the user class. <br>
