@@ -3,6 +3,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    margin-bottom: 50px;
 }
 
 header {
@@ -23,6 +24,10 @@ main {
 
 h1 {
     font-size: 24px;
+}
+
+p {
+    text-align: center;
 }
 
 .login-form label {
@@ -61,14 +66,6 @@ h1 {
     margin-bottom: 15px;
 }
 
-footer {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px 0;
-    background-color: #333;
-    color: #fff;
-}
-
 a {
     color: #007bff;
     text-decoration: none;
@@ -76,4 +73,16 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    padding-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }

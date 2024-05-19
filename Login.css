@@ -58,10 +58,12 @@ input[type="password"] {
 }
 
 footer {
+    text-align: center;
+    padding: 10px;
     background-color: #354f52;
     color: #fff;
-    text-align: center;
-    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
-
-

@@ -85,11 +85,16 @@ input[type="submit"]:hover {
 }
 
 footer {
-    background-color: #333;
-    color: #fff;
     text-align: center;
     padding: 10px;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {
