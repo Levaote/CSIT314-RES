@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $sql_profile = "INSERT INTO UserProfiles (user_id, first_name, last_name, address, profile_picture, bio) VALUES ('$user_id', '$first_name', '$last_name', '$address', '$profile_picture', '$bio')";
         if ($conn->query($sql_profile) === TRUE) {
-            header("Location: login.php");
+            header("Location: index.php");
             exit;
         } else {
             echo "Error: " . $sql_profile . "<br>" . $conn->error;
