@@ -1,19 +1,22 @@
 <?php
 require_once '../class_user.php'; // Include the User class definition
 
-class BuyerController {
+class BuyerController
+{
     protected $conn;
     protected $userID;
 
-    public function __construct($conn, $userID) {
+    public function __construct($conn, $userID)
+    {
         $this->conn = $conn;
         $this->userID = $userID;
     }
 
-    public function saveListing($listing_id) {
+    public function saveListing($listing_id)
+    {
         $save_query = "INSERT INTO SavedListings (buyer_id, listing_id) VALUES ($this->userID, $listing_id)";
         if ($this->conn->query($save_query) === TRUE) {
-            $update_query = "INSERT INTO Interactions (user_id, listing_id, interaction_type) VALUES ($this->userID, $listing_id, 'Save')";
+            $update_query = "INSERT INTO PropertyInteractions (user_id, listing_id, interaction_type) VALUES ($this->userID, $listing_id, 'Save')";
             $this->conn->query($update_query);
             header("Location: buyer.php");
             exit();
@@ -22,10 +25,11 @@ class BuyerController {
         }
     }
 
-    public function removeSavedListing($save_id) {
+    public function removeSavedListing($save_id)
+    {
         $remove_query = "DELETE FROM SavedListings WHERE save_id = $save_id";
         if ($this->conn->query($remove_query) === TRUE) {
-            $delete_query = "DELETE FROM Interactions WHERE user_id = $this->userID AND listing_id = $save_id AND interaction_type = 'Save'";
+            $delete_query = "DELETE FROM PropertyInteractions WHERE user_id = $this->userID AND listing_id = $save_id AND interaction_type = 'Save'";
             $this->conn->query($delete_query);
             header("Location: buyer.php");
             exit();
@@ -34,11 +38,24 @@ class BuyerController {
         }
     }
 
-    public function displayListing($page = 1, $limit = 5) {
+    public function displayPropertyListings($page = 1, $limit = 5)
+    {
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th>Title</th>";
+        echo "<th>Description</th>";
+        echo "<th>Property Type</th>";
+        echo "<th>Price</th>";
+        echo "<th>Location</th>";
+        echo "<th>Action</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
         $offset = ($page - 1) * $limit;
         $listingsQuery = "SELECT * FROM PropertyListings WHERE status = 'Active' LIMIT $limit OFFSET $offset";
         $listingsResult = $this->conn->query($listingsQuery);
-    
+
         if ($listingsResult->num_rows > 0) {
             while ($row = $listingsResult->fetch_assoc()) {
                 echo "<tr>";
@@ -54,28 +71,45 @@ class BuyerController {
         } else {
             echo "<tr><td colspan='6'>No new listings found.</td></tr>";
         }
-    
+        echo "</tbody>";
+        echo "</table>";
+
         // Add pagination controls
         $this->displayPaginationControls($page, $limit);
     }
 
-    private function displayPaginationControls($page, $limit) {
+    private function displayPaginationControls($page, $limit)
+    {
         $countQuery = "SELECT COUNT(*) AS total FROM PropertyListings WHERE status = 'Active'";
         $countResult = $this->conn->query($countQuery);
         $totalRows = $countResult->fetch_assoc()['total'];
         $totalPages = ceil($totalRows / $limit);
-    
+
         echo '<nav>';
         echo '<ul class="pagination">';
         for ($i = 1; $i <= $totalPages; $i++) {
             $active = $i == $page ? 'class="active"' : '';
-            echo "<li $active><a href='buyer.php?page=$i'>$i</a></li>";
+            echo "<li><a $active href='buyer.php?page=$i'>$i</a></li>";
         }
         echo '</ul>';
         echo '</nav>';
     }
 
-    public function displaySavedListing(){
+    public function displaySavedListing()
+    {
+        echo "<h2>Saved Listings</h2>";
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th>Title</th>";
+        echo "<th>Description</th>";
+        echo "<th>Property Type</th>";
+        echo "<th>Price</th>";
+        echo "<th>Location</th>";
+        echo "<th>Action</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
         $savedQuery = "SELECT p.*, s.save_id FROM PropertyListings p
                         JOIN SavedListings s ON p.listing_id = s.listing_id
                         WHERE s.buyer_id = $this->userID";
@@ -95,9 +129,12 @@ class BuyerController {
         } else {
             echo "<tr><td colspan='6'>No saved listings found.</td></tr>";
         }
+        echo "</tbody>";
+        echo "</table>";
     }
 
-    public function displayTransaction(){
+    public function displayTransaction()
+    {
         $transaction_query = "SELECT * FROM Transactions WHERE user_id = $this->userID ORDER BY transaction_date DESC";
         $transaction_result = $this->conn->query($transaction_query);
         if ($transaction_result->num_rows > 0) {

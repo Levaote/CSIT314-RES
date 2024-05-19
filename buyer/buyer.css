@@ -44,6 +44,26 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
 /* Main content styles */
 main {
     background-color: #fff;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../dbconnect.php'; 
+require_once '../dbconnect.php';
 require_once 'SellerController.php';
 require_once 'SellerView.php';
 
@@ -14,19 +14,22 @@ if ($sellerId !== null) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Dashboard - Real Estate System</title>
     <link rel="stylesheet" type="text/css" href="seller.css">
 </head>
+
 <body>
     <header>
-        <h1>Welcome, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Seller'; ?>!</h1>
+        <h1>Welcome, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Seller'; ?>!
+        </h1>
         <nav>
             <ul>
                 <li><a href="seller.php">My Property Listings</a></li>
-                <li><a href="../buyer/agent_ratings.php">Rate Agents</a></li>
+                <li><a href="../review/agent_ratings.php">Rate Agents</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>
         </nav>
@@ -51,9 +54,11 @@ if ($sellerId !== null) {
                 <?php SellerView::renderListings($listings); ?>
             </tbody>
         </table>
+
         <footer>
-        &copy; <?php echo date("Y"); ?> Real Estate System
-    </footer>
+            &copy; <?php echo date("Y"); ?> Real Estate System
+        </footer>
     </main>
 </body>
+
 </html>

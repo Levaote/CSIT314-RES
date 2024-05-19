@@ -21,43 +21,61 @@ $user_result = $conn->query($user_query);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account</title>
-    <link rel="stylesheet" href="buyer.css"> 
+    <link rel="stylesheet" href="buyer.css">
 
 </head>
+
 <body>
-    <h2>My Account Information</h2>
-    <a href="buyer.php">Home</a>
+    <header>
+        <h1>Welcome, <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Buyer'; ?>!
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="buyer.php">Home</a></li>
+                <li><a href="mortgage_calculator.php">Mortgage Calculator</a></li>
+                <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
+                <li><a href="#">Account</a></li>
+                <li><a href="../LogoutController.php">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <?php
-    if ($user_result->num_rows > 0) {
-        $user = $user_result->fetch_assoc();
-        echo "<p><strong>Username:</strong> {$user['username']}</p>";
-        echo "<p><strong>Email:</strong> {$user['email']}</p>";
-        echo "<p><strong>Phone:</strong> {$user['phone']}</p>";
-    } else {
-        echo "<p>No user information found.</p>";
-    }
-    ?>
+    <main>
+        <h2>My Account Information</h2>
 
-    <h2>Transaction History</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Transaction ID</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $buyerController->displayTransaction(); ?>
-        </tbody>
-    </table>
+        <?php
+        if ($user_result->num_rows > 0) {
+            $user = $user_result->fetch_assoc();
+            echo "<p><strong>Username:</strong> {$user['username']}</p>";
+            echo "<p><strong>Email:</strong> {$user['email']}</p>";
+            echo "<p><strong>Phone:</strong> {$user['phone']}</p>";
+        } else {
+            echo "<p>No user information found.</p>";
+        }
+        ?>
+
+        <h2>Transaction History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $buyerController->displayTransaction(); ?>
+            </tbody>
+        </table>
+    </main>
 </body>
+
 </html>
 
 <?php $conn->close() ?>

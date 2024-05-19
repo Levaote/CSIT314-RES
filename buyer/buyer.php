@@ -17,8 +17,7 @@ if (isset($_SESSION['role'])) {
             header("Location: ../seller/seller.php");
             break;
     }
-}
-else {
+} else {
     header("Location: ../index.php?error=2");
 }
 
@@ -35,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['remove_save_id'])) {
 }
 
 // Get the current page number from the query parameter, default to 1 if not set
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +55,7 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="mortgage_calculator.php">Mortgage Calculator</a></li>
-                <li><a href="agent_ratings.php">Agent Ratings & Reviews</a></li>
+                <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
                 <li><a href="accounts.php">Account</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>
@@ -67,45 +66,13 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         <!-- Property Listings Section -->
         <section>
             <h2>New Property Listings</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Property Type</th>
-                        <th>Price</th>
-                        <th>Location</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $buyerController->displayListing($page); ?>
-                </tbody>
-            </table>
+            <?php $buyerController->displayPropertyListings($page); ?>
         </section>
 
         <!-- Saved Listings Section -->
         <section>
-            <h2>Saved Listings</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Property Type</th>
-                        <th>Price</th>
-                        <th>Location</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $buyerController->displaySavedListing(); ?>
-                </tbody>
-            </table>
+            <?php $buyerController->displaySavedListing(); ?>
         </section>
-
-
-
     </main>
 
     <footer>

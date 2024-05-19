@@ -54,13 +54,13 @@ class AgentController {
 
     public function addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status) {
         $sql = "INSERT INTO PropertyListings (agent_id, seller_id, title, description, property_type, price, location, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         if (!$stmt) {
             echo "Error preparing statement: " . $this->conn->error;
             return false;
         }
-        $stmt->bind_param("isssiss", $agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status);
+        $stmt->bind_param("iisssiss", $agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status);
         if ($stmt->execute()) {
             return true;
         } else {
