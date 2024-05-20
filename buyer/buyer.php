@@ -23,14 +23,11 @@ if (isset($_SESSION['role'])) {
 
 $buyerController = new BuyerController($conn, $_SESSION['user_id']);
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['listing_id'])) {
-    $listing_id = $_GET['listing_id'];
-    $buyerController->saveListing($listing_id);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['remove_save_id'])) {
     $save_id = $_GET['remove_save_id'];
     $buyerController->removeSavedListing($save_id);
+    header("Location: buyer.php");
+    exit();
 }
 
 // Get the current page number from the query parameter, default to 1 if not set
@@ -54,6 +51,7 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
+                <li><a href="browse_properties.php">Browse Properties</a></li>
                 <li><a href="mortgage_calculator.php">Mortgage Calculator</a></li>
                 <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
                 <li><a href="accounts.php">Account</a></li>
@@ -63,14 +61,9 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     </header>
 
     <main>
-        <!-- Property Listings Section -->
-        <section>
-            <h2>New Property Listings</h2>
-            <?php $buyerController->displayPropertyListings($page); ?>
-        </section>
-
         <!-- Saved Listings Section -->
         <section>
+            <h2>Saved Listings</h2>
             <?php $buyerController->displaySavedListing(); ?>
         </section>
     </main>
