@@ -182,7 +182,9 @@ class BuyerController
                 echo "<td>{$row['property_type']}</td>";
                 echo "<td>$" . number_format($row['price'], 2) . "</td>";
                 echo "<td>{$row['location']}</td>";
-                echo "<td><a href='buyer.php?remove_save_id={$row['save_id']}'>Remove</a></td>"; // Add remove functionality
+                echo "<td><a href='buyer.php?remove_save_id={$row['save_id']}'>Remove from Saved</a><br>
+                        <a href='browse_properties.php?listing_id={$row['listing_id']}'>View</a><br>
+                        <a href='mortgage_calculator.php?calc={$row['price']}'>Calculate Loan</a></td>";
                 echo "</tr>";
             }
         } else {

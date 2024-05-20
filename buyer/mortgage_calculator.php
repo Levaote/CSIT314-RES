@@ -12,9 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
     $loanAmount = isset($_POST['loan_amount']) ? floatval($_POST['loan_amount']) : 0;
     $interestRate = isset($_POST['interest_rate']) ? floatval($_POST['interest_rate']) : 0;
     $years = isset($_POST['years']) ? intval($_POST['years']) : 0;
-    $months = isset($_POST['months']) ? intval($_POST['months']) : 0;
 
-    $loanTermMonths = $years * 12 + $months;
+    $loanTermMonths = $years * 12;
 
     if ($loanAmount > 0 && $interestRate > 0 && $loanTermMonths > 0) {
         // Create a new mortgage calculator instance
@@ -44,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
             <ul>
                 <li><a href="buyer.php">Home</a></li>
                 <li><a href="browse_properties.php">Browse Properties</a></li>
-                <li><a href="#">Mortgage Calculator</a></li>
+                <li><a href="mortgage_calculator.php">Mortgage Calculator</a></li>
                 <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
                 <li><a href="accounts.php">Account</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
@@ -59,17 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
             <input type="number" id="loan_amount" name="loan_amount" step="0.01" value="<?php echo $calc; ?>"><br><br>
             <label for="interest_rate">Interest Rate (% per annum):</label>
             <input type="number" id="interest_rate" name="interest_rate" step="0.01" required><br><br>
-            <label for="loan_term">Loan Term:</label>
+            <label for="loan_term">Loan Term (years):</label>
             <select name="years" id="years" required>
                 <option value="" selected disabled>Select Years</option>
-                <?php for ($i = 1; $i <= 30; $i++): ?>
+                <?php for ($i = 35; $i >= 1; $i--): ?>
                     <option value="<?php echo $i; ?>"><?php echo $i; ?> Year<?php echo $i !== 1 ? 's' : ''; ?></option>
-                <?php endfor; ?>
-            </select>
-            <select name="months" id="months" required>
-                <option value="" selected disabled>Select Months</option>
-                <?php for ($j = 0; $j < 12; $j++): ?>
-                    <option value="<?php echo $j; ?>"><?php echo $j; ?> Month<?php echo $j !== 1 ? 's' : ''; ?></option>
                 <?php endfor; ?>
             </select><br><br>
             <button type="submit" name="calculate">Calculate</button>
@@ -88,8 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
                 <tr>
                     <td><?php echo formatCurrency($loanAmount); ?></td>
                     <td><?php echo $interestRate; ?>%</td>
-                    <td><?php echo $years; ?> Year<?php echo $years !== 1 ? 's' : ''; ?>, <?php echo $months; ?>
-                        Month<?php echo $months !== 1 ? 's' : ''; ?></td>
+                    <td><?php echo $years; ?> Year<?php echo $years !== 1 ? 's' : ''; ?></td>
                     <td><?php echo formatCurrency($calculatorManager->getCalculator('Property')->getMonthlyRepayment()); ?>
                     </td>
                     <td><?php echo formatCurrency($calculatorManager->getCalculator('Property')->getTotalInterest()); ?>
