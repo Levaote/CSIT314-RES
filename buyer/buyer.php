@@ -63,7 +63,7 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     <main>
         <!-- Saved Listings Section -->
         <section>
-            <h2>Saved Listings</h2>;
+            <h2>Saved Listings</h2>
             <?php $buyerController->displaySavedListing(); ?>
         </section>
     </main>

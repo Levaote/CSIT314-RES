@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
         <nav>
             <ul>
                 <li><a href="buyer.php">Home</a></li>
+                <li><a href="browse_properties.php">Browse Properties</a></li>
                 <li><a href="#">Mortgage Calculator</a></li>
                 <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
                 <li><a href="accounts.php">Account</a></li>

@@ -33,8 +33,8 @@ class ReviewController
                 echo "<td>{$row['username']}</td>";
                 echo "<td>{$row['email']}</td>";
                 echo "<td>" . number_format($row['avg_rating'], 1) . "</td>";
-                echo "<td><a href='agent_ratings.php?agent_id={$row['user_id']}&agent_name={$row['username']}'>View Comments</a></td>";
-                echo "<td><a href='write_review.php?agent_id={$row['user_id']}'>Write Review</a></td>";
+                echo "<td><a href='agent_ratings.php?agent_id={$row['user_id']}&agent_name={$row['username']}'>View</a></td>";
+                echo "<td><a href='write_review.php?agent_id={$row['user_id']}'>Write</a></td>";
                 echo "</tr>";
             }
         } else {
