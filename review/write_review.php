@@ -59,8 +59,9 @@ if (isset($_GET['agent_id'])) {
         <nav>
             <ul>
                 <li><a href="../buyer/buyer.php">Home</a></li>
+                <li><a href="../buyer/browse_properties.php">Browse Properties</a></li>
                 <li><a href="../buyer/mortgage_calculator.php">Mortgage Calculator</a></li>
-                <li><a href="#">Agent Ratings & Reviews</a></li>
+                <li><a href="agent_ratings.php">Agent Ratings & Reviews</a></li>
                 <li><a href="../buyer/accounts.php">Account</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>
