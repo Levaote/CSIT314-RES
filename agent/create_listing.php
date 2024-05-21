@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sellerId = $_POST['seller_id'];
     $status = 'Active';
 
-    if ($agentController->addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status)) {
+    if ($agentController->FillPropertyDetails($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status)) {
         header("Location: agent.php");
         exit();
     } else {

@@ -9,7 +9,7 @@ $sellerId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $listings = [];
 
 if ($sellerId !== null) {
-    $listings = $sellerController->getSellerListings($sellerId);
+    $listings = $sellerController->getViews($sellerId);
 }
 ?>
 <!DOCTYPE html>

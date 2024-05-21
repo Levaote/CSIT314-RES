@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_listing'])) {
     $price = $_POST['price'];
     $location = $_POST['location'];
     
-    if ($agentController->updatePropertyListing($listingId, $title, $description, $property_type, $price, $location)) {
+    if ($agentController->UpdateListing($listingId, $title, $description, $property_type, $price, $location)) {
         header("Location: agent.php");
         exit();
     } else {

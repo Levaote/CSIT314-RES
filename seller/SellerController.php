@@ -8,7 +8,7 @@ class SellerController {
         $this->conn = $conn;
     }
 
-    public function getSellerListings($sellerId) {
+    public function getViews($sellerId) {
         $listingsQuery = "SELECT pl.*, 
                           COUNT(DISTINCT pi.interaction_id) AS views, 
                           COUNT(DISTINCT sl.listing_id) AS shortlisted

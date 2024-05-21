@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rating = $_POST['rating'];
         $comments = $_POST['comments'];
 
-        $ReviewController->writeReview($user_id, $agent_id, $rating, $comments);
+        $ReviewController->rateAgent($user_id, $agent_id, $rating, $comments);
 
     } else {
         echo "Incomplete form data";

@@ -52,7 +52,7 @@ class AgentController {
         return $sellers;
     }
 
-    public function addPropertyListing($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status) {
+    public function FillPropertyDetails($agentId, $sellerId, $title, $description, $propertyType, $price, $location, $status) {
         $sql = "INSERT INTO PropertyListings (agent_id, seller_id, title, description, property_type, price, location, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -85,7 +85,7 @@ class AgentController {
         }
     }
 
-    public function updatePropertyListing($listingId, $title, $description, $property_type, $price, $location) {
+    public function UpdateListing($listingId, $title, $description, $property_type, $price, $location) {
         $sql = "UPDATE PropertyListings SET
                 title = ?,
                 description = ?,

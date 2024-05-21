@@ -75,7 +75,7 @@ class ReviewController
         echo '<a href="agent_ratings.php">Back to Agent Ratings</a>';
     }
     
-        public function writeReview($user_id, $agent_id, $rating, $comments)
+        public function rateAgent($user_id, $agent_id, $rating, $comments)
         {
             $insert_review = "INSERT INTO Reviews (user_id, agent_id, rating, comments) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insert_review);
