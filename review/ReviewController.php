@@ -80,12 +80,18 @@ class ReviewController
             $insert_review = "INSERT INTO Reviews (user_id, agent_id, rating, comments) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insert_review);
             $stmt->bind_param("iiis", $user_id, $agent_id, $rating, $comments);
-    
+
             if ($stmt->execute()) {
-                $interaction_query = "INSERT INTO Interactions (user_id, agent_id, interaction_type) VALUES (?, ?, 'Rate')";
-                $this->conn->query($interaction_query);
-                header("Location: agent_ratings.php");
-                exit();
+                $interaction_query = "INSERT INTO PropertyInteractions (user_id, agent_id, interaction_type) VALUES (?, ?, 'Rate')";
+                $stmt_interaction = $this->conn->prepare($interaction_query);
+                $stmt_interaction->bind_param("ii", $user_id, $agent_id);
+        
+                if ($stmt_interaction->execute()) {
+                    header("Location: agent_ratings.php");
+                    exit();
+                } else {
+                    echo "Error: " . $this->conn->error;
+                }
             } else {
                 echo "Error: " . $this->conn->error;
             }
