@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['save_listing_id'])) {
         $listing_id = $_POST['save_listing_id'];
-        $buyerController->saveListing($listing_id);
+        $buyerController->SavePropertyListing($listing_id);
         header("Location: $current_url");
         exit();
     }
@@ -70,12 +70,12 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         <?php if (isset($_GET['listing_id'])) {
             echo "<section>";
             $listingID = $_GET['listing_id'];
-            $buyerController->displayPropertyListing($listingID);
+            $buyerController->DisplayPropertyListing($listingID);
             echo "</section>";
         } else {
             echo "<section>";
             echo "<h2>Property Listings</h2>";
-            $buyerController->browsePropertyListings($page);
+            $buyerController->BrowsePropertyListings($page);
             echo "</section>";
         } ?>
     </main>

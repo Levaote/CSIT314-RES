@@ -12,7 +12,7 @@ class BuyerController
         $this->userID = $userID;
     }
 
-    public function saveListing($listing_id)
+    public function SavePropertyListing($listing_id)
     {
         $save_query = "INSERT INTO SavedListings (buyer_id, listing_id) VALUES ($this->userID, $listing_id)";
         if ($this->conn->query($save_query) === TRUE) {
@@ -34,7 +34,7 @@ class BuyerController
         }
     }
 
-    public function browsePropertyListings($page = 1, $limit = 10)
+    public function BrowsePropertyListings($page = 1, $limit = 10)
     {
         echo "<table>";
         echo "<thead>";
@@ -88,7 +88,7 @@ class BuyerController
 
     
 
-    public function displayPropertyListing($listingID) {
+    public function DisplayPropertyListing($listingID) {
         $propertyQuery = "SELECT * FROM PropertyListings 
                           JOIN Users ON PropertyListings.agent_id = Users.user_id 
                           JOIN UserProfiles ON Users.user_id = UserProfiles.user_id
