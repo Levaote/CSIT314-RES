@@ -209,6 +209,23 @@ class BuyerController
             }
         } else {
             echo "<tr><td colspan='4'>No transactions found.</td></tr>";
+        }        
+    }
+    public function searchPropertyListings($search) {
+        $search = $this->conn->real_escape_string($search);
+        $sql = "SELECT * FROM PropertyListings WHERE property_type LIKE '%$search%' OR location LIKE '%$search%'";
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($property = $result->fetch_assoc()) {
+                // Display property listing
+                echo "<h2>{$property['title']}</h2>";
+                echo "<p>{$property['description']}</p><br>";
+                echo "<p><strong>Property Type:</strong> {$property['property_type']}</p>";
+                echo "<p><strong>Location:</strong> {$property['location']}</p>";
+                echo "<p><strong>Price:</strong> $" . number_format($property['price'], 2) . "</p>";
+            }
+        } else {
+            echo "<p>No property listings found.</p>";
         }
     }
 }

@@ -53,8 +53,19 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             </ul>
         </nav>
     </header>
-
     <main>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
+        <input type="text" id="search" name="search" placeholder="find property type or location">
+        <input type="submit" value="Search">
+    </form>
+       <?php
+    $search = isset($_GET['search']) ? $_GET['search'] : null;
+    if ($search) {
+        $buyerController->searchPropertyListings($search);
+    } else {
+    }
+    ?>
+
         <!-- Property Listings Section -->
         <?php if (isset($_GET['listing_id'])) {
             echo "<section>";
