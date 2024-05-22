@@ -2,51 +2,53 @@
 session_start();
 require_once 'MortgageCalculatorController.php';
 require_once '../dbconnect.php';
-$buyerID = $_SESSION['buyerID'];
 
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$buyerID = $_SESSION['user_id'];
 $calculatorManager = new MortgageCalculatorManager($conn, $buyerID);
 
 if (isset($_GET['calc'])) {
     $calc = floatval($_GET['calc']);
-}
-else {
+} else {
     $calc = 0;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['calculate'])) {
-    $loanAmount = isset($_POST['loan_amount']) ? floatval($_POST['loan_amount']) : 0;
-    $interestRate = isset($_POST['interest_rate']) ? floatval($_POST['interest_rate']) : 0;
-    $years = isset($_POST['years']) ? intval($_POST['years']) : 0;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['calculate'])) {
+        $loanAmount = isset($_POST['cloan_amount']) ? floatval($_POST['cloan_amount']) : 0;
+        $interestRate = isset($_POST['cinterest_rate']) ? floatval($_POST['cinterest_rate']) : 0;
+        $years = isset($_POST['cyears']) ? intval($_POST['cyears']) : 0;
 
-    $loanTermMonths = $years * 12;
+        $loanTermMonths = $years * 12;
 
-    if ($loanAmount > 0 && $interestRate > 0 && $loanTermMonths > 0) {
-        // Create a new mortgage calculator instance
-        $calculator = new MortgageCalculator($loanAmount, $interestRate, $loanTermMonths);
-        // Add calculator to the manager with a unique property name
-        $calculatorManager->addCalculator('New', $calculator);
+        if ($loanAmount > 0 && $interestRate > 0 && $loanTermMonths > 0) {
+            // Create a new mortgage calculator instance
+            $calculator = new MortgageCalculator($loanAmount, $interestRate, $loanTermMonths);
+            // Add calculator to the manager with a unique property name
+            $calculatorManager->addCalculator('New', $calculator);
+        }
+    } elseif (isset($_POST['save_calculation'])) {
+        $loanAmount = ($_POST['loan_amount']);
+        $interestRate = ($_POST['interest_rate']);
+        $loanTermYears = ($_POST['loan_term_years']);
+        $monthlyRepayment = ($_POST['monthly_repayment']);
+        $totalInterest = ($_POST['total_interest']);
+
+        $calculatorManager->saveCalculation($loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest);
+        header("Location: mortgage_calculator.php");
+        exit();
     }
 }
 
-elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_calculation'])) {
-    $propertyName = $_POST['property_name'];
-    $loanAmount = $_POST['loan_amount'];
-    $interestRate = $_POST['interest_rate'];
-    $loanTermYears = $_POST['loan_term_years'];
-    $monthlyRepayment = $_POST['monthly_repayment'];
-    $totalInterest = $_POST['total_interest'];
-
-    // Create a new instance of MortgageCalculatorManager
-    $manager = new MortgageCalculatorManager($conn, $buyerID);
-
-    // Create a new MortgageCalculator instance with the provided data
-    $calculator = new MortgageCalculator($loanAmount, $interestRate, $loanTermYears * 12);
-
-    // Add the calculator to the manager and save the calculation
-    $manager->addCalculator($propertyName, $calculator);
-    $manager->saveCalculation($propertyName);
-
-    echo "Calculation saved successfully!";
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
+    $calculationID = $_GET['delete'];
+    $calculatorManager->deleteSavedCalculation($calculationID);
+    header("Location: mortgage_calculator.php");
+    exit();
 }
 ?>
 
@@ -79,9 +81,9 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_calculation'
         <h2>Mortgage Calculator</h2>
 
         <?php $calculatorManager->displayMortgageCalcForm($calc);
-        
-        if (!empty($calculatorManager->getCalculator('New')))
-            $calculatorManager->displayCalculationResult(); 
+
+        if (!empty($calculatorManager->getCalculator('New'))){
+            $calculatorManager->displayCalculationResult();}
 
         $calculatorManager->displaySavedCalculations(); ?>
     </main>

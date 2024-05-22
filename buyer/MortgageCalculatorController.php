@@ -103,19 +103,20 @@ class MortgageCalculatorManager
         unset($this->calculators[$propertyName]);
     }
 
-    public function displayMortgageCalcForm($calc) {
+    public function displayMortgageCalcForm($calc)
+    {
         echo '
             <form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">
-                <label for="loan_amount">Loan Amount:</label>
-                <input type="number" id="loan_amount" name="loan_amount" step="0.01" value="' . $calc . '"><br><br>
-                <label for="interest_rate">Interest Rate (% per annum):</label>
-                <input type="number" id="interest_rate" name="interest_rate" step="0.01" required><br><br>
-                <label for="loan_term">Loan Term (years):</label>
-                <select name="years" id="years" required>
+                <label for="cloan_amount">Loan Amount:</label>
+                <input type="number" id="cloan_amount" name="cloan_amount" step="0.01" value="' . $calc . '"><br><br>
+                <label for="cinterest_rate">Interest Rate (% per annum):</label>
+                <input type="cnumber" id="cinterest_rate" name="cinterest_rate" step="0.01" required><br><br>
+                <label for="cloan_term">Loan Term (years):</label>
+                <select name="cyears" id="cyears" required>
                     <option value="" selected disabled>Select Years</option>';
-                    for ($i = 35; $i >= 1; $i--) {
-                        echo '<option value="' . $i . '">' . $i . ' Year' . ($i !== 1 ? 's' : '') . '</option>';
-                    }
+        for ($i = 35; $i >= 1; $i--) {
+            echo '<option value="' . $i . '">' . $i . ' Year' . ($i !== 1 ? 's' : '') . '</option>';
+        }
         echo '
                 </select><br><br>
                 <button type="submit" name="calculate">Calculate</button>
@@ -128,10 +129,10 @@ class MortgageCalculatorManager
         {
             return '$' . number_format($amount, 2);
         }
-    
+
         foreach ($this->calculators as $propertyName => $calculator) {
             echo '<h3>Monthly Repayment Details</h3>';
-            echo '<form method="POST" action="save_calculation.php">';
+            echo '<form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">';
             echo '<table>';
             echo '<tr>';
             echo '<th>Loan Amount</th>';
@@ -148,7 +149,6 @@ class MortgageCalculatorManager
             echo '<td>' . formatCurrency($calculator->getMonthlyRepayment()) . '</td>';
             echo '<td>' . formatCurrency($calculator->getTotalInterest()) . '</td>';
             // Hidden inputs to pass the calculator data
-            echo '<input type="hidden" name="property_name" value="' . htmlspecialchars($propertyName) . '">';
             echo '<input type="hidden" name="loan_amount" value="' . htmlspecialchars($calculator->getLoanAmount()) . '">';
             echo '<input type="hidden" name="interest_rate" value="' . htmlspecialchars($calculator->getInterestRate()) . '">';
             echo '<input type="hidden" name="loan_term_years" value="' . htmlspecialchars($calculator->getLoanTermMonths() / 12) . '">';
@@ -161,53 +161,29 @@ class MortgageCalculatorManager
         }
     }
 
-    public function saveCalculation($propertyName)
+    public function saveCalculation($loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest)
     {
-        $calculator = $this->getCalculator($propertyName);
-        if ($calculator) {
-            $loanAmount = $calculator->getLoanAmount();
-            $interestRate = $calculator->getInterestRate();
-            $loanTermYears = $calculator->getLoanTermMonths() / 12;
-            $monthlyRepayment = $calculator->getMonthlyRepayment();
-            $totalInterest = $calculator->getTotalInterest();
-            $stmt = $this->conn->prepare("
-                INSERT INTO MortgageCalculations (user_id, loan_amount, interest_rate, loan_term_years, monthly_repayment, total_interest) 
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->bindParam(1, $this->buyerID);
-            $stmt->bindParam(2, $loanAmount);
-            $stmt->bindParam(3, $interestRate);
-            $stmt->bindParam(4, $loanTermYears);
-            $stmt->bindParam(5, $monthlyRepayment);
-            $stmt->bindParam(6, $totalInterest);
-            $stmt->execute();
-        }
+        $loanAmount = number_format($loanAmount, 2, '', '');
+        $monthlyRepayment = number_format($monthlyRepayment, 2, '', '');
+        $totalInterest = number_format($totalInterest, 2, '', '');
+
+        $sql = "INSERT INTO MortgageCalculations (user_id, loan_amount, interest_rate, loan_term_years, monthly_repayment, total_interest) VALUES ($this->buyerID, $loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest)";
+        $this->conn->query($sql);
     }
 
-    public function getSavedCalculations()
-    {
-        $stmt = $this->conn->prepare("
-            SELECT * FROM MortgageCalculations WHERE user_id = ?
-        ");
-        $stmt->bindParam(1, $this->buyerID);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
 
     public function deleteSavedCalculation($calculationID)
     {
-        $stmt = $this->conn->prepare("
-            DELETE FROM MortgageCalculations WHERE user_id = ? AND calculation_id = ?
-        ");
-        $stmt->bindParam(1, $this->buyerID);
-        $stmt->bindParam(2, $calculationID);
-        $stmt->execute();
+        $sql = "DELETE FROM MortgageCalculations WHERE calculation_id = $calculationID";
+        $this->conn->query($sql);
     }
 
-    public function displaySavedCalculations(){
+    public function displaySavedCalculations()
+    {   
         echo '<h3>Saved Calculations</h3>';
-        $calculations = $this->getSavedCalculations();
-        if (count($calculations) > 0) {
+        $sql = "SELECT * FROM MortgageCalculations WHERE user_id = $this->buyerID";
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0) {
             echo '<table>';
             echo '<thead>';
             echo '<tr>';
@@ -220,14 +196,22 @@ class MortgageCalculatorManager
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
-            foreach ($calculations as $calculation) {
+            while ($row = $result->fetch_assoc()) {
+                $calculation = [
+                    'calculation_id' => $row['calculation_id'],
+                    'loan_amount' => $row['loan_amount'],
+                    'interest_rate' => $row['interest_rate'],
+                    'loan_term_years' => $row['loan_term_years'],
+                    'monthly_repayment' => $row['monthly_repayment'],
+                    'total_interest' => $row['total_interest']
+                ];
                 echo '<tr>';
-                echo '<td>' . $calculation['loan_amount'] . '</td>';
-                echo '<td>' . $calculation['interest_rate'] . '</td>';
-                echo '<td>' . $calculation['loan_term_years'] . '</td>';
-                echo '<td>' . $calculation['monthly_repayment'] . '</td>';
-                echo '<td>' . $calculation['total_interest'] . '</td>';
-                echo '<td><a href="mortgage_calculator.php?delete=' . $calculation['calculation_id'] . '">Delete</a></td>';
+                echo '<td>' . formatCurrency(htmlspecialchars($calculation['loan_amount'])) . '</td>';
+                echo '<td>' . htmlspecialchars($calculation['interest_rate']) . '%</td>';
+                echo '<td>' . htmlspecialchars($calculation['loan_term_years']) . '</td>';
+                echo '<td>' . formatCurrency(htmlspecialchars($calculation['monthly_repayment'])) . '</td>';
+                echo '<td>' . formatCurrency(htmlspecialchars($calculation['total_interest'])) . '</td>';
+                echo '<td><a href="mortgage_calculator.php?delete=' . htmlspecialchars($calculation['calculation_id']) . '">Delete</a></td>';
                 echo '</tr>';
             }
             echo '</tbody>';
@@ -236,5 +220,6 @@ class MortgageCalculatorManager
             echo '<p>No saved calculations found.</p>';
         }
     }
+
 }
 ?>
