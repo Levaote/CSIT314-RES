@@ -125,11 +125,6 @@ class MortgageCalculatorManager
 
     public function displayCalculationResult()
     {
-        function formatCurrency($amount)
-        {
-            return '$' . number_format($amount, 2);
-        }
-
         foreach ($this->calculators as $propertyName => $calculator) {
             echo '<h3>Monthly Repayment Details</h3>';
             echo '<form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">';
@@ -170,7 +165,6 @@ class MortgageCalculatorManager
         $sql = "INSERT INTO MortgageCalculations (user_id, loan_amount, interest_rate, loan_term_years, monthly_repayment, total_interest) VALUES ($this->buyerID, $loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest)";
         $this->conn->query($sql);
     }
-
 
     public function deleteSavedCalculation($calculationID)
     {
@@ -222,4 +216,10 @@ class MortgageCalculatorManager
     }
 
 }
+
+function formatCurrency($amount)
+{
+    return '$' . number_format($amount, 2);
+}
+
 ?>
