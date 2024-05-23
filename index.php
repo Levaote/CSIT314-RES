@@ -13,6 +13,9 @@ if (isset($_GET['error'])) {
         $error_message = 'Your account is suspended. Please contact the administrator.';
     }
 }
+elseif (isset($_GET['success'])) {
+    $success_message = 'Account created successfully. Please login.';
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +34,8 @@ if (isset($_GET['error'])) {
     <main>
         <?php if (!empty($error_message)) { ?>
             <p class="error-message"><?php echo $error_message; ?></p>
+        <?php } elseif (!empty($success_message)) {?>
+            <p class="success-message"><?php echo $success_message; ?></p>
         <?php } ?>
 
         <form action="LoginController.php" method="post">
