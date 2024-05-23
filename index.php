@@ -1,26 +1,6 @@
 <?php
 session_start(); 
 
-if (isset($_SESSION['role'])) {
-    switch ($_SESSION['role']) {
-        case 'System Administrator':
-            header("Location: admin/admin.php");
-            break;
-        case 'Real Estate Agent':
-            header("Location: agent/agent.php");
-            break;
-        case 'Buyer':
-            header("Location: buyer/buyer.php");
-            break;
-        case 'Seller':
-            header("Location: seller/seller.php");
-            break;
-        default:
-            header("Location: index.php");
-            break;
-    }
-}
-
 $error_message = '';
 if (isset($_GET['error'])) {
     if ($_GET['error'] == 1) {
