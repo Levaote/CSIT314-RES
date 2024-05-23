@@ -39,7 +39,7 @@ $user_result = $conn->query($user_query);
                 <li><a href="buyer.php">Home</a></li>
                 <li><a href="browse_properties.php">Browse Properties</a></li>
                 <li><a href="mortgage_calculator.php">Mortgage Calculator</a></li>
-                <li><a href="../review/agent_ratings.php">Agent Ratings & Reviews</a></li>
+                <li><a href="../review/agent_ratings.php">View Agents</a></li>
                 <li><a href="#">Account</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>

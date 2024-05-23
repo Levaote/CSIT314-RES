@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include '../dbconnect.php';
 include 'ReviewController.php';
 
@@ -29,7 +34,7 @@ $role = strtolower($_SESSION['role']);
                 <li><a href="../buyer/buyer.php">Home</a></li>
                 <li><a href="../buyer/browse_properties.php">Browse Properties</a></li>
                 <li><a href="../buyer/mortgage_calculator.php">Mortgage Calculator</a></li>
-                <li><a href="agent_ratings.php">Agent Ratings & Reviews</a></li>
+                <li><a href="agent_ratings.php">View Agents</a></li>
                 <li><a href="../buyer/accounts.php">Account</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>
@@ -38,21 +43,22 @@ $role = strtolower($_SESSION['role']);
         <nav>
             <ul>
                 <li><a href="../seller/seller.php">My Property Listings</a></li>
-                <li><a href="agent_ratings.php">Rate Agents</a></li>
+                <li><a href="agent_ratings.php">View Agents</a></li>
                 <li><a href="../LogoutController.php">Logout</a></li>
             </ul>
         </nav>
         <?php } ?>
     </header>
     <main>
-        <h2>Agent Ratings & Reviews</h2>
-
+        
         <?php
         if (!isset($_GET['agent_id'])) {
+            echo "<h2>All Agents</h2>";
             $ReviewController->displayAllAgentRatings();
         } elseif (isset($_GET['agent_id'])) {
             $agent_id = $_GET['agent_id'];
             $agent_name = $_GET['agent_name'];
+            $ReviewController->displayAgentProfile($agent_id);
             $ReviewController->displayAgentComments($agent_id, $agent_name);
         }
         ?>
