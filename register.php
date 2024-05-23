@@ -24,7 +24,6 @@
 
             <label for="role">Role:</label>
             <select id="role" name="role" required>
-                <option value="System Administrator">System Administrator</option>
                 <option value="Real Estate Agent">Real Estate Agent</option>
                 <option value="Buyer">Buyer</option>
                 <option value="Seller">Seller</option>
