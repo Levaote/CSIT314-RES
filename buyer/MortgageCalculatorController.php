@@ -158,9 +158,9 @@ class MortgageCalculatorManager
 
     public function saveCalculation($loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest)
     {
-        $loanAmount = number_format($loanAmount, 2, '', '');
-        $monthlyRepayment = number_format($monthlyRepayment, 2, '', '');
-        $totalInterest = number_format($totalInterest, 2, '', '');
+        $loanAmount = round($loanAmount, 2);
+        $monthlyRepayment = round($monthlyRepayment, 2);
+        $totalInterest = round($totalInterest, 2);
 
         $sql = "INSERT INTO MortgageCalculations (user_id, loan_amount, interest_rate, loan_term_years, monthly_repayment, total_interest) VALUES ($this->buyerID, $loanAmount, $interestRate, $loanTermYears, $monthlyRepayment, $totalInterest)";
         $this->conn->query($sql);
