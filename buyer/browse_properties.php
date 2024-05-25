@@ -10,15 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_url = $_POST['current_url'];
 
     if (isset($_POST['save_listing_id'])) {
-        $listing_id = $_POST['save_listing_id'];
-        $buyerController->SavePropertyListing($listing_id);
+        $listingID = $_POST['save_listing_id'];
+        $buyerController->SavePropertyListing($listingID);
         header("Location: $current_url");
         exit();
     }
 
     if (isset($_POST['remove_save_id'])) {
-        $listing_id = $_POST['remove_save_id'];
-        $buyerController->removeSavedListing($listing_id);
+        $listingID = $_POST['remove_save_id'];
+        $buyerController->removeSavedListing($listingID);
         header("Location: $current_url");
         exit();
     }

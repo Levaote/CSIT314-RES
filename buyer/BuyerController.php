@@ -12,11 +12,11 @@ class BuyerController
         $this->userID = $userID;
     }
 
-    public function SavePropertyListing($listing_id)
+    public function SavePropertyListing($listingID)
     {
-        $save_query = "INSERT INTO SavedListings (buyer_id, listing_id) VALUES ($this->userID, $listing_id)";
+        $save_query = "INSERT INTO SavedListings (buyer_id, listing_id) VALUES ($this->userID, $listingID)";
         if ($this->conn->query($save_query) === TRUE) {
-            $update_query = "INSERT INTO PropertyInteractions (user_id, listing_id, interaction_type) VALUES ($this->userID, $listing_id, 'Save')";
+            $update_query = "INSERT INTO PropertyInteractions (user_id, listing_id, interaction_type) VALUES ($this->userID, $listingID, 'Save')";
             $this->conn->query($update_query);
         } else {
             echo "Error: Listing cannot be saved." . $this->conn->error;
@@ -85,8 +85,6 @@ class BuyerController
         echo '</ul>';
         echo '</nav>';
     }
-
-    
 
     public function DisplayPropertyListing($listingID) {
         $propertyQuery = "SELECT * FROM PropertyListings 
